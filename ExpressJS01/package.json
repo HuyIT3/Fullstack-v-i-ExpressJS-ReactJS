@@ -1,0 +1,33 @@
+{
+  "name": "expressjs01",
+  "version": "1.0.0",
+  "description": "Backend API for FullStack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/server.js",
+    "start": "nodemon ./src/server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "reactjs"
+  ],
+  "author": "Nguyễn Hữu Trung",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
+    "@babel/preset-env": "^7.25.3",
+    "nodemon": "^3.1.4"
+  }
+}
