@@ -1,19 +1,25 @@
-import axios from 'axios';
-import { getToken } from './auth';
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080',
+    baseURL: import.meta.env.VITE_BACKEND_URL
 });
 
-instance.interceptors.request.use(
-  (config) => {
-    const token = getToken();
+instance.interceptors.request.use(function (config) {
+    const token = localStorage.getItem("access_token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-  },
-  (error) => Promise.reject(error)
-);
+}, function (error) {
+    return Promise.reject(error);
+});
+
+instance.interceptors.response.use(function (response) {
+    if (response && response.data) return response.data;
+    return response;
+}, function (error) {
+    if (error?.response?.data) return error?.response?.data;
+    return Promise.reject(error);
+});
 
 export default instance;

@@ -1,50 +1,90 @@
-import React, { useContext, useState } from 'react';
-import { Form, Input, Button, notification, Row, Col } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/context/auth.context';
+import React, { useContext } from 'react';
+import { Button, Col, Divider, Form, Input, notification, Row } from 'antd';
 import { loginApi } from '../util/apis';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../components/context/auth.context';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { setAuth } = useContext(AuthContext);
 
-  const onFinish = async (values) => {
-    setLoading(true);
-    try {
-      const res = await loginApi(values.email, values.password);
-      if (res && res.data && res.data.EC === 0) {
-        login(res.data.user, res.data.access_token);
-        notification.success({ message: 'Login Success' });
-        navigate('/');
-      } else {
-        notification.error({ message: 'Login Failed', description: res.data?.EM });
-      }
-    } catch (error) {
-      notification.error({ message: 'Error', description: 'Server error' });
-    }
-    setLoading(false);
-  };
+    const onFinish = async (values) => {
+        const { email, password } = values;
+        const res = await loginApi(email, password);
+        if (res && res.EC === 0) {
+            localStorage.setItem("access_token", res.access_token);
+            notification.success({
+                message: "LOGIN_USER",
+                description: "Success"
+            });
+            setAuth({
+                isAuthenticated: true,
+                user: {
+                    email: res?.user?.email ?? "",
+                    name: res?.user?.name ?? ""
+                }
+            });
+            navigate("/");
+        } else {
+            notification.error({
+                message: "LOGIN_USER",
+                description: res?.EM ?? "error"
+            });
+        }
+    };
 
-  return (
-    <Row justify="center" style={{ marginTop: '30px' }}>
-      <Col xs={24} md={16} lg={8}>
-        <Form name="login" onFinish={onFinish} layout="vertical">
-          <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              Login
-            </Button>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
-  );
-};
+    return (
+        <Row justify={"center"} style={{ marginTop: "30px" }}>
+            <Col xs={24} md={16} lg={8}>
+                <fieldset style={{
+                    padding: "15px",
+                    margin: "5px",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px"
+                }}>
+                    <legend>Đăng Nhập</legend>
+                    <Form
+                        name="basic"
+                        onFinish={onFinish}
+                        autoComplete="off"
+                        layout='vertical'
+                    >
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[{
+                                required: true,
+                                message: "Please input your email!",
+                            }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[{
+                                required: true,
+                                message: 'Please input your password!',
+                            }]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                login
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                    <Link to={"/"}><ArrowLeftOutlined /> Quay lại trang chủ</Link>
+                    <Divider />
+                    <div style={{ textAlign: "center" }}>
+                        Chưa có tài khoản? <Link to={"/register"}>đăng ký tại đây</Link>
+                    </div>
+                </fieldset>
+            </Col>
+        </Row>
+    );
+}
 
 export default LoginPage;

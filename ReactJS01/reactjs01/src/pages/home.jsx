@@ -1,14 +1,15 @@
-import React from 'react';
-import { Typography } from 'antd';
-
-const { Title } = Typography;
+import { HomeOutlined } from '@ant-design/icons';
+import { Result } from 'antd';
 
 const HomePage = () => {
-  return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <Title level={2}>Welcome to FullStack App</Title>
-    </div>
-  );
-};
+    return (
+        <div style={{ padding: 20 }}>
+            <Result
+                icon={<HomeOutlined />}
+                title="JSON Web Token (React/Node.JS) - iotstar.vn"
+            />
+        </div>
+    );
+}
 
 export default HomePage;

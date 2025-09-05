@@ -1,18 +1,51 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import axios from "./util/axios.customize";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./components/context/auth.context";
+import { Spin } from "antd";
 
 function App() {
-  return (
-    <div>
-      <h1>App Layout</h1>
-      <nav>
-        <Link to="/">Home</Link> |{" "}
-        <Link to="/login">Login</Link> |{" "}
-        <Link to="/register">Register</Link>
-      </nav>
-      <hr />
-      <Outlet />
-    </div>
-  );
+    const { setAuth, appLoading, setAppLoading } = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchAccount = async () => {
+            setAppLoading(true);
+            try {
+                const res = await axios.get('/v1/api/account');
+                if (res && !res.message) {
+                    setAuth({
+                        isAuthenticated: true,
+                        user: {
+                            email: res.email,
+                            name: res.name
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log("Error fetching account:", error);
+            } finally {
+                setAppLoading(false);
+            }
+        }
+        fetchAccount();
+    }, []);
+
+    return (
+        <div>
+            {appLoading === true ?
+                <div style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)"
+                }}>
+                    <Spin />
+                </div>
+                :
+                <Outlet />
+            }
+        </div>
+    );
 }
 
 export default App;

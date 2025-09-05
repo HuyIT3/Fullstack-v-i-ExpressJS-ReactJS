@@ -21,3 +21,13 @@ export const getUserApi = () => {
     return axios.get(URL_API);
 }
 
+export const getProductsByCategoryApi = (categoryId, page = 1, limit = 5) => {
+  const URL_API = `/v1/api/category/${categoryId}/products?page=${page}&limit=${limit}`;
+  return axios.get(URL_API);
+};
+
+export const getProductsByCategoryLazyApi = (categoryId, limit = 5, skip = 0) => {
+  // Sửa thành 'skip' cho MongoDB
+  const URL_API = `/v1/api/category/${categoryId}/products-lazy?limit=${limit}&skip=${skip}`;
+  return axios.get(URL_API);
+};

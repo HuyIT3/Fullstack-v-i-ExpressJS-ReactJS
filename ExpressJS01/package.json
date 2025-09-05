@@ -13,7 +13,7 @@
     "expressjs",
     "reactjs"
   ],
-  "author": "Nguyễn Hữu Trung",
+  "author": "Dư Hoàng Huyy",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
