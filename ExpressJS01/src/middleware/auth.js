@@ -7,6 +7,7 @@ const auth = (req, res, next) => {
         "/register",
         "/login",
         "/v1/api/category/:categoryId/products",
+        "/v1/api/products/search",
         "/v1/api/category/:categoryId/products-lazy"
     ];
 
