@@ -31,3 +31,12 @@ export const getProductsByCategoryLazyApi = (categoryId, limit = 5, skip = 0) =>
   const URL_API = `/v1/api/category/${categoryId}/products-lazy?limit=${limit}&skip=${skip}`;
   return axios.get(URL_API);
 };
+export const searchProductsApi = (params) => {
+  const URL_API = "/v1/api/products/search";
+  return axios.get(URL_API, { params });
+};
+// util/apis.js
+export const getAccountApi = () => {
+    const URL_API = "/v1/api/account";
+    return axios.get(URL_API);
+};
